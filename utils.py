@@ -2,6 +2,10 @@ from __future__ import division
 from operator import itemgetter
 import itertools
 import operator
+from datetime import datetime
+
+def diff_month(d1, d2):
+    return (d1.year - d2.year)*12 + d1.month - d2.month
 
 def openfile(fname):
     with open(fname) as f:
