@@ -52,9 +52,9 @@ def getRecentResults(data, date, lastXGames, team, result, location):
 #    if len(teamdata) == 0: return None
     
     #debug
-    if len(teamdata) < lastXGames:
-        print 'Setting None', team
-        return None
+#    if len(teamdata) < lastXGames:
+#        print 'Setting None', team
+#        return None
 #        raise Exception("Debug this")
     
     for x in teamdata:
@@ -179,6 +179,8 @@ def trainOnAll(data):
         #use matches only where both home and away teams have played at least (2*lastXGames)-1 matches
         matches = filter(lambda l: l['HomeMatches'] >= 2*lastXGames 
                          and l['AwayMatches'] >= 2*lastXGames
+#                         and ('Arsenal' in [l['HomeTeam'],l['AwayTeam']])
+                         and ('Aston Villa' in [l['HomeTeam'],])
                          , data['matchdata'][:])
         matches.sort(key=lambda item: item['Date'], reverse=True)
         cnt = 0
@@ -188,44 +190,56 @@ def trainOnAll(data):
             tmp = []
             hedr = []
             for result in ['Wins', 'Losses', 'Draws']:
-                for team in [x['HomeTeam'], x['AwayTeam']]:
-                    if team == x['HomeTeam']:
-                        location = 'Home'
-                    elif team == x['AwayTeam']:
-                        location = 'Away'
-                    
-                    hedr.append(str(lastXGames)+result+location)
-                    tmp.append(getRecentResults(   data=data,
-                                                   date=x['Date'],
-                                                   lastXGames=lastXGames,
-                                                   team=team,
-                                                   result=result,
-                                                   location=location))
-                    
-            
-            for team in [x['HomeTeam'], x['AwayTeam']]:
-                if team == x['HomeTeam']:
-                        location = 'Home'
-                elif team == x['AwayTeam']:
-                    location = 'Away'
                 
                 tmp.append(getRecentResults(   data=data,
                                                date=x['Date'],
                                                lastXGames=lastXGames,
-                                               team=team,
+                                               team=x['HomeTeam'],
                                                result=result,
-                                               location='All'))
-                hedr.append(str(lastXGames)+location+'All')
+                                               location='Home')
+                           -
+                           getRecentResults(   data=data,
+                                               date=x['Date'],
+                                               lastXGames=lastXGames,
+                                               team=x['AwayTeam'],
+                                               result=result,
+                                               location='Away'))
+                hedr.append(str(lastXGames)+result)
+                    
+            
+            
+                
+            tmp.append(getRecentResults(   data=data,
+                                           date=x['Date'],
+                                           lastXGames=lastXGames,
+                                           team=x['HomeTeam'],
+                                           result=result,
+                                           location='All')
+                       -
+                       getRecentResults(   data=data,
+                                           date=x['Date'],
+                                           lastXGames=lastXGames,
+                                           team=x['AwayTeam'],
+                                           result=result,
+                                           location='All'))
+            hedr.append(str(lastXGames)+'All')
                 
                         
                         
-                for stat in statslist:
-                    tmp.append(getRecentStats(data=data,
-                                              date=x['Date'],
-                                              lastXGames=lastXGames,
-                                              team=team,
-                                              stat=stat))
-                    hedr.append(str(lastXGames)+location+stat)
+            for stat in statslist:
+                tmp.append(getRecentStats(data=data,
+                                          date=x['Date'],
+                                          lastXGames=lastXGames,
+                                          team=x['HomeTeam'],
+                                          stat=stat)
+                           -
+                           getRecentStats(data=data,
+                                          date=x['Date'],
+                                          lastXGames=lastXGames,
+                                          team=x['AwayTeam'],
+                                          stat=stat))
+                hedr.append(str(lastXGames)+stat)
+                
             hedr.append('result')
             tmp.append(x['FTR'])
             train.append(tmp)

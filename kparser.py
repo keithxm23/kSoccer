@@ -14,14 +14,14 @@ def parseFolder(path):
                     for row in reader:
                         linecount += 1
                         if linecount == 1:
-#                    for line in f:
                             headers = row
                             continue
-#                        break
-#                    for line in f:
+                        
+                        #get betting results data
+                        asdasd=1
+                        
                         match = {}
                         match['season'] = fn.strip('.csv')
-#                        row = line.split(",")
                         for x in xrange(1,len(headers)):
                             try:
                                 row[x] = float(row[x])
