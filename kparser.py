@@ -16,10 +16,7 @@ def parseFolder(path):
                         if linecount == 1:
                             headers = row
                             continue
-                        
-                        #get betting results data
-                        asdasd=1
-                        
+
                         match = {}
                         match['season'] = fn.strip('.csv')
                         for x in xrange(1,len(headers)):
@@ -81,6 +78,17 @@ def parseFolder(path):
                         
                         match['HomeMatches'] = scoreTable[match['HomeTeam']]['matchesPlayed'] - 1
                         match['AwayMatches'] = scoreTable[match['AwayTeam']]['matchesPlayed'] - 1
+                        
+                        
+                        #get betting results data
+                        betstartindex = headers.index("B365H")
+                        betheaders = headers[betstartindex:]
+                        for b in xrange(0,len(betheaders),3):
+                            if not (betheaders[b].endswith('H') and betheaders[b+1].endswith('D') and betheaders[b+2].endswith('A')):
+                                break
+                            bettmpdict = {k: match[k] for k in [betheaders[b],betheaders[b+1],betheaders[b+2],]}
+                            match['bet_'+betheaders[b][:-1]] = min(bettmpdict, key=bettmpdict.get)[-1:]
+                        
                         
                         for x in [2,3]:
                             if row[x] in teamdata:

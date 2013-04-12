@@ -3,7 +3,7 @@ from kparser import parseFolder
 import cPickle as pickle, datetime
 from featurefns import *
 import csv
-from utils import column
+from utils import column, most_common
 
 if __name__ == '__main__':
     try:
@@ -55,6 +55,49 @@ if __name__ == '__main__':
     for tr in traindata:
         writer.writerow(tr)
     ofile.close()
+    
+    betkeys = []
+    for m in matchdata:
+        bk = [k for k in m.keys() if k.startswith('bet_')]
+        betkeys += [k for k in bk if k not in betkeys]
+    
+    
+    notcompletebetters = []
+    for m in matchdata:
+        for b in betkeys:
+            if b not in m.keys() and b not in notcompletebetters:
+                notcompletebetters.append(b)    
+    
+    
+    betkeys = [k for k in betkeys if k not in notcompletebetters]
+    betpreds = []
+    for m in matchdata:
+        tmp = []
+        for b in betkeys:
+            tmp.append(m[b])
+        tmp.append(most_common(tmp))
+        tmp.append(m['FTR'])
+        betpreds.append(tmp)
+    
+    betkeys.append('MajorityBet')
+    betkeys.append('Result')
+        
+    bfile = open("betters.csv", "wb")
+    writer = csv.writer(bfile, quoting=csv.QUOTE_ALL)
+    writer.writerow(betkeys)
+    for tr in betpreds:
+        writer.writerow(tr)
+    bfile.close()
+    
+    #calculating accuracy of each
+    count = [0 for x in betkeys]
+    for bets in betpreds:
+        for num, b in enumerate(bets):
+            if b == bets[-1]:
+                count[num]+=1
+    
+    
+    
 #    for x in featureGenerator: print x
 #    trainingData = getTrainingData(matchDates, featureGenerator)
     a=1
