@@ -16,20 +16,20 @@ statslist = [
 def getRecentResults(data, date, lastXGames, team, result, location):
     if location == 'All':
         teamdata = filter(lambda l: l['Date'] < date 
-#                          and l['HomeMatches'] >= lastXGames 
-#                          and l['AwayMatches'] >= lastXGames
+                          and l['HomeMatches'] >= lastXGames 
+                          and l['AwayMatches'] >= lastXGames
                           , data['teamdata'][team])
     elif location == 'Home':
         teamdata = filter(lambda l: l['Date'] < date 
                           and l['HomeTeam'] == team
-#                           and l['HomeMatches'] >= lastXGames 
-#                           and l['AwayMatches'] >= lastXGames
+                           and l['HomeMatches'] >= lastXGames 
+                           and l['AwayMatches'] >= lastXGames
                            , data['teamdata'][team])
     elif location == 'Away':
         teamdata = filter(lambda l: l['Date'] < date 
                           and l['AwayTeam'] == team
-#                           and l['HomeMatches'] >= lastXGames 
-#                           and l['AwayMatches'] >= lastXGames
+                           and l['HomeMatches'] >= lastXGames 
+                           and l['AwayMatches'] >= lastXGames
                            , data['teamdata'][team])
     else:
         raise Exception("Invalid location argument for getRecentResults")
@@ -66,12 +66,68 @@ def getRecentResults(data, date, lastXGames, team, result, location):
 
 
 
+
+
+
+
+
+def getLastEncounters(data, date, lastXGames, homeTeam, awayTeam, result):
+    teamdata = filter(lambda l: l['Date'] < date 
+#                      and l['HomeMatches'] >= lastXGames 
+#                      and l['AwayMatches'] >= lastXGames
+                      and homeTeam in [l['HomeTeam'], l['AwayTeam']]
+                      and awayTeam in [l['HomeTeam'], l['AwayTeam']] 
+                      , data['matchdata'])
+    
+    teamdata = teamdata[:lastXGames]
+
+    if result == 'Wins':
+        homeresult = 'H'
+        awayresult = 'A'
+    elif result == 'Losses':
+        homeresult = 'A'
+        awayresult = 'H'
+    elif result == 'Draws':
+        homeresult = 'D'
+        awayresult = 'D'
+    else:
+        raise Exception("Invalid result argument for getRecentResults")
+    
+    count = 0.0
+    if len(teamdata) == 0: return 0.0
+    
+    #debug
+#    if len(teamdata) < lastXGames:
+#        print 'Setting None', team
+#        return None
+#        raise Exception("Debug this")
+    
+    for x in teamdata:
+#        print x['Date'], x['HomeTeam'], x['AwayTeam'], x['FTR']
+        if (x['HomeTeam'] == homeTeam and x['FTR'] == homeresult or x['AwayTeam'] == homeTeam and x['FTR'] == awayresult):
+            count += 1
+            
+    return count/len(teamdata)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #stat = FTGoals / HTGoals / Shots / ShotsOnTarget / HitWoodwork / Corners / Fouls / Offisides / Yellows / Reds / BookingsPoints
 def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
     try:
         teamdata = filter(lambda l: l['Date'] < date 
-    #                      and l['HomeMatches'] >= lastXGames 
-    #                      and l['AwayMatches'] >= lastXGames
+                          and l['HomeMatches'] >= lastXGames 
+                          and l['AwayMatches'] >= lastXGames
                           , data['teamdata'][team])    
         teamdata = teamdata[:lastXGames]
     
@@ -95,9 +151,9 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
         count = 0.0
     #    if len(teamdata) == 0: return None
         
-        if len(teamdata) < lastXGames:
-            print 'Setting None', team
-            return None
+#        if len(teamdata) < lastXGames:
+#            print 'Setting None', team
+#            return None
     #        raise Exception("Debug this")
         
         for x in teamdata:
@@ -111,6 +167,9 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
         return count/len(teamdata)
     except Exception as e:
         return e
+
+
+
 
 def getMatchDates(data, home, away, dateBefore, monthsOld):
     teamdata = filter(lambda l: l['Date'] < dateBefore 
@@ -179,8 +238,8 @@ def trainOnAll(data):
         #use matches only where both home and away teams have played at least (2*lastXGames)-1 matches
         matches = filter(lambda l: l['HomeMatches'] >= 2*lastXGames 
                          and l['AwayMatches'] >= 2*lastXGames
-#                         and ('Arsenal' in [l['HomeTeam'],l['AwayTeam']])
-                         and ('Aston Villa' in [l['HomeTeam'],])
+                         and ('Arsenal' in [l['HomeTeam'],l['AwayTeam']]
+                              or 'Aston Villa' in [l['HomeTeam'],l['AwayTeam']])
                          , data['matchdata'][:])
         matches.sort(key=lambda item: item['Date'], reverse=True)
         cnt = 0
@@ -205,6 +264,15 @@ def trainOnAll(data):
                                                result=result,
                                                location='Away'))
                 hedr.append(str(lastXGames)+result)
+                
+                
+                tmp.append(getLastEncounters(data=data, 
+                                         date=x['Date'], 
+                                         lastXGames=lastXGames, 
+                                         homeTeam=x['HomeTeam'], 
+                                         awayTeam=x['AwayTeam'], 
+                                         result=result))
+                hedr.append(str(lastXGames)+'encounters'+result)
                     
             
             
@@ -240,8 +308,15 @@ def trainOnAll(data):
                                           stat=stat))
                 hedr.append(str(lastXGames)+stat)
                 
+            
+            tmp.append(x['HomePoints']-x['AwayPoints'])
+            hedr.append('PtsDiff')
+                
             hedr.append('result')
             tmp.append(x['FTR'])
+            
+            hedr.append('BetResult')
+            tmp.append(x['BetResult'])
             train.append(tmp)
         
         return train, hedr
