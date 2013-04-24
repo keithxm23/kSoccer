@@ -1,4 +1,7 @@
 from utils import diff_month
+from stadia import stadia
+import math
+
 
 statslist = [
              'FTGoals', 
@@ -49,7 +52,7 @@ def getRecentResults(data, date, lastXGames, team, result, location):
         raise Exception("Invalid result argument for getRecentResults")
     
     count = 0.0
-#    if len(teamdata) == 0: return None
+    if len(teamdata) == 0: return None
     
     #debug
 #    if len(teamdata) < lastXGames:
@@ -62,7 +65,7 @@ def getRecentResults(data, date, lastXGames, team, result, location):
         if (x['AwayTeam'] == team and x['FTR'] == awayresult) or (x['HomeTeam'] == team and x['FTR'] == homeresult):
             count += 1
             
-    return count/len(teamdata)
+    return count*count/len(teamdata)
 
 
 
@@ -72,12 +75,12 @@ def getRecentResults(data, date, lastXGames, team, result, location):
 
 
 def getLastEncounters(data, date, lastXGames, homeTeam, awayTeam, result):
+    if homeTeam == awayTeam:
+        return None
+    
     teamdata = filter(lambda l: l['Date'] < date 
-#                      and l['HomeMatches'] >= lastXGames 
-#                      and l['AwayMatches'] >= lastXGames
-                      and homeTeam in [l['HomeTeam'], l['AwayTeam']]
                       and awayTeam in [l['HomeTeam'], l['AwayTeam']] 
-                      , data['matchdata'])
+                      , data['teamdata'][homeTeam])
     
     teamdata = teamdata[:lastXGames]
 
@@ -104,17 +107,10 @@ def getLastEncounters(data, date, lastXGames, homeTeam, awayTeam, result):
     
     for x in teamdata:
 #        print x['Date'], x['HomeTeam'], x['AwayTeam'], x['FTR']
-        if (x['HomeTeam'] == homeTeam and x['FTR'] == homeresult or x['AwayTeam'] == homeTeam and x['FTR'] == awayresult):
+        if ((x['HomeTeam'] == homeTeam and x['FTR'] == homeresult) or (x['AwayTeam'] == homeTeam and x['FTR'] == awayresult)):
             count += 1
             
-    return count/len(teamdata)
-
-
-
-
-
-
-
+    return count*count/len(teamdata)
 
 
 
@@ -149,7 +145,7 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
             raise Exception("Invalid 'stat' argument for getRecentStats")
     
         count = 0.0
-    #    if len(teamdata) == 0: return None
+        if len(teamdata) == 0: return None
         
 #        if len(teamdata) < lastXGames:
 #            print 'Setting None', team
@@ -164,7 +160,7 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
                 count += x[homestat]
     #            print x['Date'], x['HomeTeam'], x['AwayTeam'], x[homestat]
                 
-        return count/len(teamdata)
+        return count*count/len(teamdata)
     except Exception as e:
         return e
 
@@ -227,10 +223,17 @@ def getRecentGenerator(getRecentFn, params, date):
 
 
 
-def getTrainingData(date, monthsAgo, matchDates, ):
-    pass
+def getTrainingData(dataset, teamwise, date, homeTeam, awayTeam):
+    data = [l[:-4] for l in dataset 
+                 if l[-3] < date
+                 and homeTeam in l[-2:-3]
+                 and awayTeam in l[-2:-3]]
+    
+    tmp = []
 
 def trainOnAll(data):
+    teamdat = {}
+    matchdat = {}
     try:
         lastXGames = 3
         train = []
@@ -238,88 +241,155 @@ def trainOnAll(data):
         #use matches only where both home and away teams have played at least (2*lastXGames)-1 matches
         matches = filter(lambda l: l['HomeMatches'] >= 2*lastXGames 
                          and l['AwayMatches'] >= 2*lastXGames
-                         and ('Arsenal' in [l['HomeTeam'],l['AwayTeam']]
-                              or 'Aston Villa' in [l['HomeTeam'],l['AwayTeam']])
+                         and ('West Brom' in [l['HomeTeam'],l['AwayTeam']]
+                              or 'Man United' in [l['HomeTeam'],l['AwayTeam']])
                          , data['matchdata'][:])
         matches.sort(key=lambda item: item['Date'], reverse=True)
-        cnt = 0
+        cnt = 0.0
         for x in matches[:]:
-            cnt+=1
-    #        print cnt, x['Date']
+            cnt+=1.0
+            print cnt/len(matches), x['Date']
             tmp = []
             hedr = []
+            
+            
             for result in ['Wins', 'Losses', 'Draws']:
-                
-                tmp.append(getRecentResults(   data=data,
+#                for teamC in data['teamdata'].keys():
+                for teamC in ['Chelsea', 'Liverpool','Tottenham','Man City', 'Man United',
+                              'Wigan','Everton','Sunderland']:
+                    hom = getLastEncounters(data=data, 
+                                             date=x['Date'], 
+                                             lastXGames=lastXGames, 
+                                             homeTeam=x['HomeTeam'], 
+                                             awayTeam=teamC, 
+                                             result=result)
+                    awy = getLastEncounters(data=data, 
+                                             date=x['Date'], 
+                                             lastXGames=lastXGames, 
+                                             homeTeam=x['AwayTeam'], 
+                                             awayTeam=teamC, 
+                                             result=result)
+                    
+                    if hom == None or awy == None:
+                        tmp.append(None)
+                    else:
+                        tmp.append(hom-awy)
+                    hedr.append(teamC+str(lastXGames)+'encounters'+result)
+                    
+                homa = getRecentResults(   data=data,
+                                               date=x['Date'],
+                                               lastXGames=lastXGames,
+                                               team=x['HomeTeam'],
+                                               result=result,
+                                               location='All')
+                awya = getRecentResults(   data=data,
+                                               date=x['Date'],
+                                               lastXGames=lastXGames,
+                                               team=x['AwayTeam'],
+                                               result=result,
+                                               location='All')
+                if homa == None or awya == None:
+                    tmp.append(None)
+                else:
+                    tmp.append(homa - awya)
+                hedr.append(str(lastXGames)+'All'+result)
+
+                homr = getRecentResults(   data=data,
                                                date=x['Date'],
                                                lastXGames=lastXGames,
                                                team=x['HomeTeam'],
                                                result=result,
                                                location='Home')
-                           -
-                           getRecentResults(   data=data,
+                awyr = getRecentResults(   data=data,
                                                date=x['Date'],
                                                lastXGames=lastXGames,
                                                team=x['AwayTeam'],
                                                result=result,
-                                               location='Away'))
+                                               location='Away')
+                if homr == None or awyr == None:
+                    tmp.append(None)
+                else:
+                    tmp.append(homr - awyr)
                 hedr.append(str(lastXGames)+result)
                 
-                
-                tmp.append(getLastEncounters(data=data, 
-                                         date=x['Date'], 
-                                         lastXGames=lastXGames, 
-                                         homeTeam=x['HomeTeam'], 
-                                         awayTeam=x['AwayTeam'], 
-                                         result=result))
-                hedr.append(str(lastXGames)+'encounters'+result)
-                    
-            
-            
-                
-            tmp.append(getRecentResults(   data=data,
-                                           date=x['Date'],
-                                           lastXGames=lastXGames,
-                                           team=x['HomeTeam'],
-                                           result=result,
-                                           location='All')
-                       -
-                       getRecentResults(   data=data,
-                                           date=x['Date'],
-                                           lastXGames=lastXGames,
-                                           team=x['AwayTeam'],
-                                           result=result,
-                                           location='All'))
-            hedr.append(str(lastXGames)+'All')
-                
+                                
                         
                         
             for stat in statslist:
-                tmp.append(getRecentStats(data=data,
+                homs = getRecentStats(data=data,
                                           date=x['Date'],
                                           lastXGames=lastXGames,
                                           team=x['HomeTeam'],
                                           stat=stat)
-                           -
-                           getRecentStats(data=data,
+                awys = getRecentStats(data=data,
                                           date=x['Date'],
                                           lastXGames=lastXGames,
                                           team=x['AwayTeam'],
-                                          stat=stat))
+                                          stat=stat)
+                if homs == None or awys == None:
+                    tmp.append(None)
+                else:
+                    tmp.append(homs - awys)
                 hedr.append(str(lastXGames)+stat)
                 
             
-            tmp.append(x['HomePoints']-x['AwayPoints'])
+            tmp.append(pow(x['HomePoints'],2)-pow(x['AwayPoints'],2))
             hedr.append('PtsDiff')
                 
+            tmp.append(getDist(x['HomeTeam'],x['AwayTeam']))
+            hedr.append('distance')
+            
             hedr.append('result')
             tmp.append(x['FTR'])
             
             hedr.append('BetResult')
             tmp.append(x['BetResult'])
+            
+            hedr.append('Date')
+            tmp.append(x['Date'])
+            
+            hedr.append('HomeTeam')
+            tmp.append(x['HomeTeam'])
+            
+            hedr.append('AwayTeam')
+            tmp.append(x['AwayTeam'])
+            
             train.append(tmp)
+            
+            if x['HomeTeam'] in teamdat:
+                teamdat[x['HomeTeam']].append(tmp)
+            else:
+                teamdat[x['HomeTeam']] = [tmp]
+                
+            if x['AwayTeam'] in teamdat:
+                teamdat[x['AwayTeam']].append(tmp)
+            else:
+                teamdat[x['AwayTeam']] = [tmp]
+                
+            if x['HomeTeam']+x['AwayTeam'] in matchdat:
+                matchdat[x['HomeTeam']+x['AwayTeam']].append(tmp)
+            else:
+                matchdat[x['HomeTeam']+x['AwayTeam']] = [tmp]
         
-        return train, hedr
+        return train, teamdat, matchdat, hedr
     
     except Exception as e:
         return e
+    
+    
+def deg2rad(deg):
+    return deg * (math.pi/180)
+
+
+def getDist(homeTeam, awayTeam):
+    R = 6371 # Radius of the earth in km
+    (lat2,lat1) = (stadia[homeTeam][0], stadia[awayTeam][0])
+    (lon2,lon1) = (stadia[homeTeam][1], stadia[awayTeam][1])
+    dLat = deg2rad(lat2-lat1); # deg2rad below
+    dLon = deg2rad(lon2-lon1) 
+    a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(deg2rad(lat1)) * math.cos(deg2rad(lat2)) *  math.sin(dLon/2) * math.sin(dLon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = R * c # Distance in km
+    return d
+
+    

@@ -82,27 +82,42 @@ if __name__ == '__main__':
         traindata = pickle.load( open( "traindata.p", "rb" ) )
         headers = pickle.load( open( "headers.p", "rb" ) )
     except:
-        traindata, headers = trainOnAll(data)
+        traindata, teamwise, matchwise, headers = trainOnAll(data)
         pickle.dump( traindata, open( "traindata.p", "wb" ) )
+        pickle.dump( teamwise, open( "teamwise.p", "wb" ) )
+        pickle.dump( matchwise, open( "matchwise.p", "wb" ) )
         pickle.dump( headers, open( "headers.p", "wb" ) )
     
     
-    #normalize features in training data
-#    for x in xrange(len(traindata[0])-1):
-#        minval = min(column(traindata,x))
-#        if minval < 0:
-#            for num, y in enumerate(column(traindata,x)):
-#                traindata[num][x] = y - minval
+#    normalize features in training data
+    for x in xrange(len(traindata[0])-5):
+        tmp = [t for t in column(traindata,x) if t != None]
+        if len(tmp) == 0:
+            avg = 0
+        else:
+            avg = sum(tmp)/len(tmp)
+        for num, y in enumerate(column(traindata,x)):
+            if traindata[num][x] == None:
+                traindata[num][x] = avg
     
     
-    ofile = open("traindataArsEve.csv", 'wb')
+    
+    tofile = open("testdata.csv", 'wb')
+    twriter = csv.writer(tofile, quoting=csv.QUOTE_ALL)
+    
+    twriter.writerow(headers)
+    
+    ofile = open("traindata.csv", 'wb')
     writer = csv.writer(ofile, quoting=csv.QUOTE_ALL)
     
     writer.writerow(headers)
     for tr in traindata:
-        writer.writerow(tr)
+        if 'Man United' in tr[-2:-1] and 'West Brom' in tr[-2:-1]:
+            twriter.writerow(tr)
+        else:
+            writer.writerow(tr)
     ofile.close()
-    
+    tofile.close()
     
 #    for x in featureGenerator: print x
 #    trainingData = getTrainingData(matchDates, featureGenerator)
