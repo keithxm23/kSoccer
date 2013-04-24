@@ -231,7 +231,7 @@ def getTrainingData(dataset, teamwise, date, homeTeam, awayTeam):
     
     tmp = []
 
-def trainOnAll(data):
+def trainOnAll(data, teamA=None, teamB=None):
     teamdat = {}
     matchdat = {}
     try:
@@ -241,8 +241,8 @@ def trainOnAll(data):
         #use matches only where both home and away teams have played at least (2*lastXGames)-1 matches
         matches = filter(lambda l: l['HomeMatches'] >= 2*lastXGames 
                          and l['AwayMatches'] >= 2*lastXGames
-                         and ('West Brom' in [l['HomeTeam'],l['AwayTeam']]
-                              or 'Man United' in [l['HomeTeam'],l['AwayTeam']])
+                         and (teamA in [l['HomeTeam'],l['AwayTeam']]
+                              or teamB in [l['HomeTeam'],l['AwayTeam']])
                          , data['matchdata'][:])
         matches.sort(key=lambda item: item['Date'], reverse=True)
         cnt = 0.0
@@ -353,7 +353,7 @@ def trainOnAll(data):
             
             hedr.append('AwayTeam')
             tmp.append(x['AwayTeam'])
-            
+#            
             train.append(tmp)
             
             if x['HomeTeam'] in teamdat:

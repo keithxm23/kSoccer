@@ -4,6 +4,8 @@ import cPickle as pickle, datetime
 from featurefns import *
 import csv
 from utils import column, most_common
+from kcross import adaboost
+import datetime
 
 if __name__ == '__main__':
     try:
@@ -78,11 +80,13 @@ if __name__ == '__main__':
     
     
     
+    teamA = 'Man United'
+    teamB = 'Everton'
     try:
         traindata = pickle.load( open( "traindata.p", "rb" ) )
         headers = pickle.load( open( "headers.p", "rb" ) )
     except:
-        traindata, teamwise, matchwise, headers = trainOnAll(data)
+        traindata, teamwise, matchwise, headers = trainOnAll(data, teamA=teamA, teamB=teamB)
         pickle.dump( traindata, open( "traindata.p", "wb" ) )
         pickle.dump( teamwise, open( "teamwise.p", "wb" ) )
         pickle.dump( matchwise, open( "matchwise.p", "wb" ) )
@@ -111,14 +115,27 @@ if __name__ == '__main__':
     writer = csv.writer(ofile, quoting=csv.QUOTE_ALL)
     
     writer.writerow(headers)
+    train = []
+    test = []
+    fullTest = []
     for tr in traindata:
-        if 'Man United' in tr[-2:-1] and 'West Brom' in tr[-2:-1]:
-            twriter.writerow(tr)
+        if teamA in tr and teamB in tr:
+            if tr[-3] >= datetime.date(2010, 9, 26):
+                twriter.writerow(tr)
+                test.append(tr[:-4])
+                fullTest.append(tr)
         else:
             writer.writerow(tr)
+            train.append(tr[:-4])
     ofile.close()
     tofile.close()
     
+    for t in train:
+        t.append(1.0/len(train))
+    for t in test:
+        t.append(None)
+    adaboost(train, test, headers, fullTest)
 #    for x in featureGenerator: print x
 #    trainingData = getTrainingData(matchDates, featureGenerator)
     a=1
+    print "end"
