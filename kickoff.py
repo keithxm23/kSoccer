@@ -134,7 +134,7 @@ if __name__ == '__main__':
                 fullTest = []
                 for tr in traindata:
                     if teamA in tr and teamB in tr:
-                        if ((tr[-3] >= datetime.date(2005, 9, 1))
+                        if ((tr[-3] >= datetime.date(2008, 9, 1))
             #                and (tr[-5] != 'D')
                             ):
                             twriter.writerow(tr)
