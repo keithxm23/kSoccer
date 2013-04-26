@@ -10,9 +10,9 @@ statslist = [
              'ShotsOnTarget',
 #             'HitWoodwork',
              'Corners', 
-             'Fouls', 
+#             'Fouls', 
 #             'Offsides', 
-             'Yellows', 
+#             'Yellows', 
              'Reds'
              ]
 

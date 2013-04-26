@@ -3,6 +3,7 @@ from node import Node
 from tree import buildTree, predict
 import copy, random, time
 from math import ceil
+import csv
 
 def adaboost(train, test, headers, fullTestData):
     ylabels = ['H', 'A', 'D']
@@ -22,12 +23,14 @@ def adaboost(train, test, headers, fullTestData):
     print "Now checking predictions"
     corr = 0
     print "Home\tAway\tPrediction\tActual\tBookie"
+    file = open("testdata.csv", 'wb')
+    writer = csv.writer(file, quoting=csv.QUOTE_ALL)
     for p in xrange(0,len(prediction)):
-        print column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p] 
+        writer.writerow([column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]) 
         if prediction[p] == column(test,-2)[p]:
             corr+=1
     
-    
+    file.close()
     print str(float(corr)*100/len(prediction))
         
     print "done"

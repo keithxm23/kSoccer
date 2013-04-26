@@ -113,21 +113,22 @@ if __name__ == '__main__':
     
     
     
-    tofile = open("testdata.csv", 'wb')
-    twriter = csv.writer(tofile, quoting=csv.QUOTE_ALL)
-    
-    twriter.writerow(headers)
-    
-    ofile = open("traindata.csv", 'wb')
-    writer = csv.writer(ofile, quoting=csv.QUOTE_ALL)
-    
-    writer.writerow(headers)
+
 
     teamAs = ['Man United']
     teamBs = ['West Ham', 'Newcastle', 'Everton']
     for teamA in teamAs:
         for teamB in teamBs:
             if teamA != teamB:
+                tofile = open("testdata.csv", 'wb')
+                twriter = csv.writer(tofile, quoting=csv.QUOTE_ALL)
+                
+                twriter.writerow(headers)
+                
+                ofile = open("traindata.csv", 'wb')
+                writer = csv.writer(ofile, quoting=csv.QUOTE_ALL)
+                
+                writer.writerow(headers)
                 pretrain = []
                 test = []
                 fullTest = []
