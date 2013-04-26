@@ -26,6 +26,7 @@ def adaboost(train, test, headers, fullTestData):
     file = open("resultdata.csv", 'a')
     writer = csv.writer(file, quoting=csv.QUOTE_ALL)
     for p in xrange(0,len(prediction)):
+        print '\a'
         writer.writerow([column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]) 
         print [column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]
         if prediction[p] == column(test,-2)[p]:
