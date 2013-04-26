@@ -27,10 +27,13 @@ def adaboost(train, test, headers, fullTestData):
     writer = csv.writer(file, quoting=csv.QUOTE_ALL)
     for p in xrange(0,len(prediction)):
         writer.writerow([column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]) 
+        print [column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]
         if prediction[p] == column(test,-2)[p]:
             corr+=1
     
     file.close()
-    print str(float(corr)*100/len(prediction))
-        
+    try:
+        print str(float(corr)*100/len(prediction)), len(prediction)
+    except ZeroDivisionError:
+        print 0, len(prediction)
     print "done"

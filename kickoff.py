@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
 
     teamAs = ['Man United']
-    teamBs = ['West Ham', 'Newcastle', 'Everton']
+    teamBs = ['Wigan']
     for teamA in teamAs:
         for teamB in teamBs:
             if teamA != teamB:

@@ -79,8 +79,9 @@ def getLastEncounters(data, date, lastXGames, homeTeam, awayTeam, result):
         return None
     
     teamdata = filter(lambda l: l['Date'] < date 
-                      and awayTeam in [l['HomeTeam'], l['AwayTeam']] 
-                      , data['teamdata'][homeTeam])
+                      and awayTeam in [l['HomeTeam'], l['AwayTeam']]
+                      and homeTeam in [l['HomeTeam'], l['AwayTeam']] 
+                      , data['matchdata'])
     
     teamdata = teamdata[:lastXGames]
 
@@ -289,7 +290,18 @@ def trainOnAll(data):
 #            tmp.append((hd*fabs(hd))-(ad*fabs(ad)))
             for result in ['Wins', 'Losses', 'Draws']:
                 
-
+                hom = getLastEncounters(data=data, 
+                                         date=x['Date'], 
+                                         lastXGames=lastXGames, 
+                                         homeTeam=x['HomeTeam'], 
+                                         awayTeam=x['AwayTeam'], 
+                                         result=result)
+                
+                if hom == None:
+                    tmp.append(None)
+                else:
+                    tmp.append(hom)
+                hedr.append('H2H'+str(lastXGames)+'encounters'+result)
                                 
 #                for teamC in data['teamdata'].keys():
                 for teamC in []:
