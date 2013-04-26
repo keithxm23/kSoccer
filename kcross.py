@@ -23,7 +23,7 @@ def adaboost(train, test, headers, fullTestData):
     print "Now checking predictions"
     corr = 0
     print "Home\tAway\tPrediction\tActual\tBookie"
-    file = open("testdata.csv", 'wb')
+    file = open("resultdata.csv", 'a')
     writer = csv.writer(file, quoting=csv.QUOTE_ALL)
     for p in xrange(0,len(prediction)):
         writer.writerow([column(fullTestData,-2)[p], column(fullTestData,-1)[p], prediction[p], column(test,-2)[p], column(fullTestData,-4)[p]]) 
