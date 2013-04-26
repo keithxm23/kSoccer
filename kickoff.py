@@ -159,7 +159,7 @@ if __name__ == '__main__':
                 
                 train = []
                 for tcount, t in enumerate(trainEucs):
-                    if tcount <300:
+                    if tcount <400:
             #        if ((teamA in t[0][-2:]) or teamB in t[0][-2:]) and tcount<300:
             #        if True:
                         train.append(t[0][:-4])
@@ -175,4 +175,4 @@ if __name__ == '__main__':
                     t.append(None)
                     
                 adaboost(train, test, headers, fullTest)
-                print "end"
+    print "end"
