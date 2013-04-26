@@ -37,7 +37,7 @@ def buildTree(node, leftLabel, headers):
         
     global cntr
     cntr+=1
-    print str(error)+"\t"+str(cntr)
+#    print str(error)+"\t"+str(cntr)
     if prevError != None:
         if abs(error - prevError) <= 0.0000001 or cntr > 50:
 #        if abs(error - prevError) <= 0.00001:

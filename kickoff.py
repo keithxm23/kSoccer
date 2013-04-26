@@ -5,16 +5,16 @@ from featurefns import *
 import csv
 from utils import column, most_common
 from kcross import adaboost
-import datetime
+import datetime, operator
 
 if __name__ == '__main__':
     try:
-        teamdata = pickle.load( open( "teamdata.p", "rb" ) )
-        matchdata = pickle.load( open( "matchdata.p", "rb" ) )
+        teamdata = pickle.load( open( "teamdata.pckl", "rb" ) )
+        matchdata = pickle.load( open( "matchdata.pckl", "rb" ) )
     except:
         teamdata, matchdata = parseFolder('footydata/epl')
-        pickle.dump( teamdata, open( "teamdata.p", "wb" ) )
-        pickle.dump( matchdata, open( "matchdata.p", "wb" ) )
+        pickle.dump( teamdata, open( "teamdata.pckl", "wb" ) )
+        pickle.dump( matchdata, open( "matchdata.pckl", "wb" ) )
         
     data = {}
     data['teamdata'] = teamdata
@@ -78,15 +78,11 @@ if __name__ == '__main__':
             if b == bets[-1]:
                 count[num]+=1
     
-    
-    
-    teamA = 'Man United'
-    teamB = 'Everton'
     try:
         traindata = pickle.load( open( "traindata.p", "rb" ) )
         headers = pickle.load( open( "headers.p", "rb" ) )
     except:
-        traindata, teamwise, matchwise, headers = trainOnAll(data, teamA=teamA, teamB=teamB)
+        traindata, teamwise, matchwise, headers = trainOnAll(data)
         pickle.dump( traindata, open( "traindata.p", "wb" ) )
         pickle.dump( teamwise, open( "teamwise.p", "wb" ) )
         pickle.dump( matchwise, open( "matchwise.p", "wb" ) )
@@ -97,12 +93,23 @@ if __name__ == '__main__':
     for x in xrange(len(traindata[0])-5):
         tmp = [t for t in column(traindata,x) if t != None]
         if len(tmp) == 0:
-            avg = 0
+            avg = 0.0
         else:
             avg = sum(tmp)/len(tmp)
+        mn = min(tmp)
+        mx = max(tmp)
         for num, y in enumerate(column(traindata,x)):
             if traindata[num][x] == None:
-                traindata[num][x] = avg
+                try:
+                    traindata[num][x] = (avg-mn)/(mx-mn)
+                except ZeroDivisionError:
+                    traindata[num][x] = 0.0
+            else:
+                try:
+                    traindata[num][x] = (traindata[num][x]-mn)/(mx-mn)
+                except ZeroDivisionError:
+                    traindata[num][x] = 0.0
+        
     
     
     
@@ -115,27 +122,56 @@ if __name__ == '__main__':
     writer = csv.writer(ofile, quoting=csv.QUOTE_ALL)
     
     writer.writerow(headers)
-    train = []
-    test = []
-    fullTest = []
-    for tr in traindata:
-        if teamA in tr and teamB in tr:
-            if tr[-3] >= datetime.date(2010, 9, 26):
-                twriter.writerow(tr)
-                test.append(tr[:-4])
-                fullTest.append(tr)
-        else:
-            writer.writerow(tr)
-            train.append(tr[:-4])
-    ofile.close()
-    tofile.close()
-    
-    for t in train:
-        t.append(1.0/len(train))
-    for t in test:
-        t.append(None)
-    adaboost(train, test, headers, fullTest)
-#    for x in featureGenerator: print x
-#    trainingData = getTrainingData(matchDates, featureGenerator)
-    a=1
-    print "end"
+
+    teamAs = ['Man United']
+    teamBs = ['West Ham', 'Newcastle', 'Everton']
+    for teamA in teamAs:
+        for teamB in teamBs:
+            if teamA != teamB:
+                pretrain = []
+                test = []
+                fullTest = []
+                for tr in traindata:
+                    if teamA in tr and teamB in tr:
+                        if ((tr[-3] >= datetime.date(2005, 9, 1))
+            #                and (tr[-5] != 'D')
+                            ):
+                            twriter.writerow(tr)
+                            test.append(tr[:-4])
+                            fullTest.append(tr)
+                    else:
+                        pretrain.append(tr[:])
+                
+                #Get avg feature values the points that were selected as test points
+                for t in test:
+                    avgtest = []
+                    for x in xrange((len(t)-1)):
+                        avgtest.append(sum(column(test,x))/len(column(test,x)))
+                                
+                #Now for all datapoints except testing one, calculate their euclidean distance
+                #from the averaged testpoint and sort in ascending order
+                trainEucs = []
+                for t in pretrain:
+                    trainEucs.append((t,getEucDist(avgtest[:-1],t[:-5])))
+                    
+                trainEucs.sort(key=operator.itemgetter(1))
+                
+                train = []
+                for tcount, t in enumerate(trainEucs):
+                    if tcount <300:
+            #        if ((teamA in t[0][-2:]) or teamB in t[0][-2:]) and tcount<300:
+            #        if True:
+                        train.append(t[0][:-4])
+                        writer.writerow(t[0])
+                    
+                ofile.close()
+                tofile.close()
+                    
+                for t in train:
+                    t.append(1.0/len(train))
+                    
+                for t in test:
+                    t.append(None)
+                    
+                adaboost(train, test, headers, fullTest)
+                print "end"

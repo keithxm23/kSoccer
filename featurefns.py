@@ -1,7 +1,7 @@
 from utils import diff_month
 from stadia import stadia
 import math
-
+from math import fabs
 
 statslist = [
              'FTGoals', 
@@ -164,7 +164,35 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
     except Exception as e:
         return e
 
-
+def getTeamReferee(data, team, date, refree):
+    teamdata = filter(lambda l: l['Date'] < date
+                      and (team in [l['HomeTeam'], l['AwayTeam']] )
+                      and (refree == l['Referee']),
+                      data['teamdata'][team]
+                      )
+    
+    avgwins = len(filter(lambda l: (team in l['HomeTeam'] and l['FTR'] == 'H')
+                         and (team in l['AwayTeam'] and l['FTR'] == 'A'),data['teamdata'][team]))
+    avgdraws = len(filter(lambda l:l['FTR'] == 'D', data['teamdata'][team]))
+    avglosses = len(data['teamdata'][team]) - avgwins - avgdraws
+    
+    W=L=D=0
+    for t in teamdata:
+        if t['FTR'] == 'D':
+            D += 1
+        elif (team == t['HomeTeam'] and t['FTR'] == 'H'):
+            W += 1
+        else:
+            L += 1
+    
+    if W > 0: W *= 100/len(teamdata)
+    if L > 0: L *= 100/len(teamdata)
+    if D > 0: D *= 100/len(teamdata)
+    if avgwins > 0: avgwins *= 100/len(data['teamdata'][team])
+    if avglosses > 0: avglosses *= 100/len(data['teamdata'][team])
+    if avgdraws > 0: avgdraws *= 100/len(data['teamdata'][team])
+    
+    return W - avgwins, L - avglosses, D - avgdraws
 
 
 def getMatchDates(data, home, away, dateBefore, monthsOld):
@@ -231,7 +259,7 @@ def getTrainingData(dataset, teamwise, date, homeTeam, awayTeam):
     
     tmp = []
 
-def trainOnAll(data, teamA=None, teamB=None):
+def trainOnAll(data):
     teamdat = {}
     matchdat = {}
     try:
@@ -241,8 +269,6 @@ def trainOnAll(data, teamA=None, teamB=None):
         #use matches only where both home and away teams have played at least (2*lastXGames)-1 matches
         matches = filter(lambda l: l['HomeMatches'] >= 2*lastXGames 
                          and l['AwayMatches'] >= 2*lastXGames
-                         and (teamA in [l['HomeTeam'],l['AwayTeam']]
-                              or teamB in [l['HomeTeam'],l['AwayTeam']])
                          , data['matchdata'][:])
         matches.sort(key=lambda item: item['Date'], reverse=True)
         cnt = 0.0
@@ -251,12 +277,26 @@ def trainOnAll(data, teamA=None, teamB=None):
             print cnt/len(matches), x['Date']
             tmp = []
             hedr = []
+#            Refree infulence
+#            hw, hl, hd = getTeamReferee(data, x['HomeTeam'], x['Date'], x['Referee'])
+#            aw, al, ad = getTeamReferee(data, x['AwayTeam'], x['Date'], x['Referee'])
             
-            
+#            hedr.append('RefWin')
+#            tmp.append((hw*fabs(hw))-(aw*fabs(aw)))
+#            hedr.append('RefLoss')
+#            tmp.append((hl*fabs(hl))-(al*fabs(al)))
+#            hedr.append('RefDraw')
+#            tmp.append((hd*fabs(hd))-(ad*fabs(ad)))
             for result in ['Wins', 'Losses', 'Draws']:
+                
+
+                                
 #                for teamC in data['teamdata'].keys():
-                for teamC in ['Chelsea', 'Liverpool','Tottenham','Man City', 'Man United',
-                              'Wigan','Everton','Sunderland']:
+                for teamC in []:
+#                for teamC in ['Chelsea','Man City', 'Man United', 'Arsenal'
+#                              'Liverpool','Tottenham',
+#                              'Wigan','Everton','Sunderland'
+#                              ]:
                     hom = getLastEncounters(data=data, 
                                              date=x['Date'], 
                                              lastXGames=lastXGames, 
@@ -335,9 +375,10 @@ def trainOnAll(data, teamA=None, teamB=None):
             
             tmp.append(pow(x['HomePoints'],2)-pow(x['AwayPoints'],2))
             hedr.append('PtsDiff')
+            
                 
-            tmp.append(getDist(x['HomeTeam'],x['AwayTeam']))
-            hedr.append('distance')
+#            tmp.append(getDist(x['HomeTeam'],x['AwayTeam']))
+#            hedr.append('distance')
             
             hedr.append('result')
             tmp.append(x['FTR'])
@@ -392,4 +433,6 @@ def getDist(homeTeam, awayTeam):
     d = R * c # Distance in km
     return d
 
+def getEucDist(vect1, vect2):
+    return pow(sum([pow(vect1[x]-vect2[x],2) for x in xrange(0,len(vect1))]),0.5)
     

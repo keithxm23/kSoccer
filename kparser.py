@@ -30,51 +30,53 @@ def parseFolder(path):
                         else:
                             match['Date'] = datetime.datetime.strptime(row[1],"%d/%m/%y").date()
                         
-
+#                        if match['FTR'] == 'D':
+#                            continue
+                        
                         try:
                             match['HomePoints'] = scoreTable[match['HomeTeam']]['points']
                         except KeyError:
-                            match['HomePoints'] = 0
+                            match['HomePoints'] = 0.0
                         
                         try:
                             match['AwayPoints'] = scoreTable[match['AwayTeam']]['points']
                         except KeyError:
-                            match['AwayPoints'] = 0
+                            match['AwayPoints'] = 0.0
                         
                         for t in [match['HomeTeam'], match['AwayTeam']]:
                             if t in scoreTable.keys():
                                 scoreTable[t]['matchesPlayed'] += 1
                                 if t == match['HomeTeam']:
                                     if match['FTR'] == 'H':
-                                        scoreTable[t]['points'] += 3
+                                        scoreTable[t]['points'] += 3.0
                                     elif match['FTR'] == 'D':
-                                        scoreTable[t]['points'] += 1
+                                        scoreTable[t]['points'] += 1.0
                                     else:
-                                        scoreTable[t]['points'] += 0
+                                        scoreTable[t]['points'] += 0.0
                                 else:
                                     if match['FTR'] == 'H':
-                                        scoreTable[t]['points'] += 0
+                                        scoreTable[t]['points'] += 0.0
                                     elif match['FTR'] == 'D':
-                                        scoreTable[t]['points'] += 1
+                                        scoreTable[t]['points'] += 1.0
                                     else:
-                                        scoreTable[t]['points'] += 3
+                                        scoreTable[t]['points'] += 3.0
                             else:
                                 scoreTable[t] = {}
                                 scoreTable[t]['matchesPlayed'] = 1
                                 if t == match['HomeTeam']:
                                     if match['FTR'] == 'H':
-                                        scoreTable[t]['points'] = 3
+                                        scoreTable[t]['points'] = 3.0
                                     elif match['FTR'] == 'D':
-                                        scoreTable[t]['points'] = 1
+                                        scoreTable[t]['points'] = 1.0
                                     else:
-                                        scoreTable[t]['points'] = 0
+                                        scoreTable[t]['points'] = 0.0
                                 else:
                                     if match['FTR'] == 'H':
-                                        scoreTable[t]['points'] = 0
+                                        scoreTable[t]['points'] = 0.0
                                     elif match['FTR'] == 'D':
-                                        scoreTable[t]['points'] = 1
+                                        scoreTable[t]['points'] = 1.0
                                     else:
-                                        scoreTable[t]['points'] = 3
+                                        scoreTable[t]['points'] = 3.0
                         
                         match['HomeMatches'] = scoreTable[match['HomeTeam']]['matchesPlayed'] - 1
                         match['AwayMatches'] = scoreTable[match['AwayTeam']]['matchesPlayed'] - 1
