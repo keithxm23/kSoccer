@@ -115,8 +115,8 @@ if __name__ == '__main__':
     
 
 
-    teamAs = ['Man United']
-    teamBs = ['Wolves', 'West Ham', 'Sunderland', 'Stoke']
+    teamAs = ['Arsenal']
+    teamBs = ['Wigan']
     for teamA in teamAs:
         for teamB in teamBs:
             if teamA != teamB:
@@ -144,35 +144,36 @@ if __name__ == '__main__':
                         pretrain.append(tr[:])
                 
                 #Get avg feature values the points that were selected as test points
-                for t in test:
-                    avgtest = []
-                    for x in xrange((len(t)-1)):
-                        avgtest.append(sum(column(test,x))/len(column(test,x)))
-                                
-                #Now for all datapoints except testing one, calculate their euclidean distance
-                #from the averaged testpoint and sort in ascending order
-                trainEucs = []
-                for t in pretrain:
-                    trainEucs.append((t,getEucDist(avgtest[:-1],t[:-5])))
-                    
-                trainEucs.sort(key=operator.itemgetter(1))
-                
-                train = []
-                for tcount, t in enumerate(trainEucs):
-                    if tcount <400:
-            #        if ((teamA in t[0][-2:]) or teamB in t[0][-2:]) and tcount<300:
-            #        if True:
-                        train.append(t[0][:-4])
-                        writer.writerow(t[0])
-                    
+                for tsnum, ts in enumerate(test):
+                    if tsnum in [5,6]:
+                        avgtest = ts
+    #                    for x in xrange((len(t)-1)):
+    #                        avgtest.append(sum(column(test,x))/len(column(test,x)))
+                                    
+                        #Now for all datapoints except testing one, calculate their euclidean distance
+                        #from the averaged testpoint and sort in ascending order
+                        trainEucs = []
+                        for t in pretrain:
+                            trainEucs.append((t,getEucDist(avgtest[:-1],t[:-5])))
+                            
+                        trainEucs.sort(key=operator.itemgetter(1))
+                        
+                        train = []
+                        for tcount, t in enumerate(trainEucs):
+                            if tcount <400:
+                    #        if ((teamA in t[0][-2:]) or teamB in t[0][-2:]) and tcount<300:
+                    #        if True:
+                                train.append(t[0][:-4])
+                                writer.writerow(t[0])
+                            
+                        
+                            
+                        for t in train:
+                            t.append(1.0/len(train))
+                            
+                        ts.append(None)
+                            
+                        adaboost(train, [ts], headers, [fullTest[tsnum]])
                 ofile.close()
                 tofile.close()
-                    
-                for t in train:
-                    t.append(1.0/len(train))
-                    
-                for t in test:
-                    t.append(None)
-                    
-                adaboost(train, test, headers, fullTest)
     print "end"
