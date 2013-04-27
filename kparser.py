@@ -30,8 +30,6 @@ def parseFolder(path):
                         else:
                             match['Date'] = datetime.datetime.strptime(row[1],"%d/%m/%y").date()
                         
-#                        if match['FTR'] == 'D':
-#                            continue
                         
                         try:
                             match['HomePoints'] = scoreTable[match['HomeTeam']]['points']

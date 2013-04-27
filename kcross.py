@@ -6,11 +6,11 @@ from math import ceil
 import csv
 
 def adaboost(train, test, headers, fullTestData):
-    ylabels = ['H', 'A', 'D']
+    ylabels = ['H', 'A', 'D']#Make predictions for each of the possible labels
     results = []
     for y in ylabels:
 #        print "Training for", y
-        rootNode = Node(train)
+        rootNode = Node(train)#Initialize first decision stump
         treeRootNode = buildTree(rootNode, y, headers)
         results.append(predict(test, rootNode.splits, y))
     
@@ -18,6 +18,7 @@ def adaboost(train, test, headers, fullTestData):
     prediction = []
     for r in xrange(0,len(results[0])):
         temp = [zy for zy in column(results, r)]
+        #Take the label with corresponding max value of alpha as final prediction
         prediction.append(ylabels[temp.index(max(temp))])
         
     print "Now checking predictions"

@@ -8,10 +8,10 @@ from kcross import adaboost
 import datetime, operator
 
 if __name__ == '__main__':
-    try:
+    try:#If already serialzed load parssed data
         teamdata = pickle.load( open( "teamdata.pckl", "rb" ) )
         matchdata = pickle.load( open( "matchdata.pckl", "rb" ) )
-    except:
+    except:#Else now parse csv data and serialize it
         teamdata, matchdata = parseFolder('footydata/epl')
         pickle.dump( teamdata, open( "teamdata.pckl", "wb" ) )
         pickle.dump( matchdata, open( "matchdata.pckl", "wb" ) )
@@ -19,21 +19,7 @@ if __name__ == '__main__':
     data = {}
     data['teamdata'] = teamdata
     data['matchdata'] = matchdata
-    
-#    for m in teamdata['Arsenal']: print m['Date'], m['HomeTeam'], m['HomePoints'], m['HomeMatches'], m['AwayTeam'],  m['AwayPoints'], m['AwayMatches']
- 
-    
-#    print getRecentStats(data, date=datetime.date(2013,1,15),lastXGames = 10, team='Arsenal', stat='FTGoals')
-#    print getRecentResults(data, date=datetime.date(2012,1,15),lastXGames = 10, team='Arsenal', result='Wins', location='Away')
-#    print getRecentResults(data, date=datetime.date(2012,1,15),lastXGames = 10, team='Arsenal', result='Wins', location='All')
-#
-#    homeTeam = 'Arsenal'
-#    awayTeam = 'Aston Villa'
-#    matchDates, labels = getMatchDates(data, home=homeTeam, away=awayTeam, dateBefore=datetime.date(2012,1,15), monthsOld=18)
-#    matchDates = [x['Date'] for x in data['matchdata']]
-    
-#    featureGenerator = getFeatureGenerator(home=homeTeam, away=awayTeam)
-    
+       
     #code to evaluate different betting agencies
     betkeys = []
     for m in matchdata:
@@ -54,7 +40,7 @@ if __name__ == '__main__':
         tmp = []
         for b in betkeys:
             tmp.append(m[b])
-        tmp.append(most_common(tmp))
+        tmp.append(most_common(tmp))#Calculate book maker prediction as most common prediction among all bookmakers
         m['BetResult'] = most_common(tmp)
         tmp.append(m['FTR'])
         betpreds.append(tmp)
@@ -64,7 +50,7 @@ if __name__ == '__main__':
     betkeys.append('MajorityBet')
     betkeys.append('Result')
         
-    bfile = open("betters.csv", "wb")
+    bfile = open("betters.csv", "wb")#Stores the better predictions for each match
     writer = csv.writer(bfile, quoting=csv.QUOTE_ALL)
     writer.writerow(betkeys)
     for tr in betpreds:
@@ -78,10 +64,10 @@ if __name__ == '__main__':
             if b == bets[-1]:
                 count[num]+=1
     
-    try:
+    try:#Try and load serialized data with features extracted
         traindata = pickle.load( open( "traindata.p", "rb" ) )
         headers = pickle.load( open( "headers.p", "rb" ) )
-    except:
+    except:#Else now calculate feature data for every match and seralize it
         traindata, teamwise, matchwise, headers = trainOnAll(data)
         pickle.dump( traindata, open( "traindata.p", "wb" ) )
         pickle.dump( teamwise, open( "teamwise.p", "wb" ) )
@@ -90,6 +76,7 @@ if __name__ == '__main__':
     
     
 #    normalize features in training data
+# If any feature has missing values (None) replace it with the average
     for x in xrange(len(traindata[0])-5):
         tmp = [t for t in column(traindata,x) if t != None]
         if len(tmp) == 0:
@@ -98,6 +85,7 @@ if __name__ == '__main__':
             avg = sum(tmp)/len(tmp)
         mn = min(tmp)
         mx = max(tmp)
+        #Now normalize the values as (fx-fmin)/fmax
         for num, y in enumerate(column(traindata,x)):
             if traindata[num][x] == None:
                 try:
@@ -159,7 +147,7 @@ if __name__ == '__main__':
                 
                 train = []
                 for tcount, t in enumerate(trainEucs):
-                    if tcount <400:
+                    if tcount <400:#Take top 400 closest datapoints as training set
             #        if ((teamA in t[0][-2:]) or teamB in t[0][-2:]) and tcount<300:
             #        if True:
                         train.append(t[0][:-4])

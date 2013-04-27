@@ -1,0 +1,583 @@
+Arsenal,Wigan,H,A,H
+,,,,
+Wigan,Arsenal,H,A,A
+,,,,
+Arsenal,Wigan,H,H,H
+,,,,
+Wigan,Arsenal,H,D,A
+,,,,
+Wigan,Arsenal,A,H,A
+,,,,
+Wigan,Arsenal,H,A,A
+,,,,
+Arsenal,Wigan,H,H,H
+,,,,
+West Brom,Arsenal,A,A,A
+,,,,
+Arsenal,West Brom,H,H,H
+,,,,
+West Brom,Arsenal,A,D,A
+,,,,
+West Brom,Arsenal,A,A,A
+,,,,
+Arsenal,Newcastle,H,H,H
+,,,,
+Newcastle,Arsenal,H,D,A
+,,,,
+Arsenal,Newcastle,H,A,H
+,,,,
+Newcastle,Arsenal,A,A,A
+,,,,
+Birmingham,Arsenal,D,A,A
+,,,,
+Arsenal,Birmingham,H,H,H
+,,,,
+Birmingham,Arsenal,H,D,A
+,,,,
+Arsenal,Birmingham,H,H,H
+,,,,
+Bolton,Arsenal,H,D,A
+,,,,
+Bolton,Arsenal,H,H,A
+,,,,
+Arsenal,Bolton,H,H,H
+,,,,
+Bolton,Arsenal,A,A,A
+,,,,
+Arsenal,Bolton,H,H,H
+,,,,
+Wolves,Arsenal,A,A,A
+,,,,
+Arsenal,Wolves,H,D,H
+,,,,
+Arsenal,Wolves,H,H,H
+,,,,
+Wolves,Arsenal,H,A,A
+,,,,
+Arsenal,Wolves,H,H,H
+,,,,
+Wolves,Arsenal,H,A,A
+,,,,
+West Ham,Arsenal,H,A,A
+,,,,
+Arsenal,West Ham,H,H,H
+,,,,
+Arsenal,West Ham,H,H,H
+,,,,
+West Ham,Arsenal,A,D,A
+,,,,
+Arsenal,West Ham,H,D,H
+,,,,
+West Ham,Arsenal,H,A,A
+,,,,
+Sunderland,Arsenal,H,A,A
+,,,,
+Arsenal,Sunderland,H,H,H
+,,,,
+Arsenal,Sunderland,H,D,H
+,,,,
+Arsenal,Sunderland,H,H,H
+,,,,
+Sunderland,Arsenal,D,H,A
+,,,,
+Arsenal,Sunderland,H,D,H
+,,,,
+Sunderland,Arsenal,A,D,A
+,,,,
+Stoke,Arsenal,A,D,A
+,,,,
+Arsenal,Stoke,H,H,H
+,,,,
+Stoke,Arsenal,H,H,A
+,,,,
+Arsenal,Stoke,H,H,H
+,,,,
+Stoke,Arsenal,A,A,A
+,,,,
+Arsenal,Stoke,H,H,H
+,,,,
+Arsenal,Stoke,H,H,H
+,,,,
+Stoke,Arsenal,H,H,A
+,,,,
+Portsmouth,Arsenal,H,A,A
+,,,,
+Portsmouth,Arsenal,D,A,A
+,,,,
+Arsenal,Portsmouth,H,H,H
+,,,,
+Arsenal,Blackburn,H,H,H
+,,,,
+Arsenal,Blackburn,H,D,H
+,,,,
+Blackburn,Arsenal,A,H,A
+,,,,
+Arsenal,Blackburn,H,H,H
+,,,,
+Arsenal,Blackburn,H,H,H
+,,,,
+Hull,Arsenal,A,A,A
+,,,,
+Arsenal,Hull,D,H,H
+,,,,
+Hull,Arsenal,D,A,A
+,,,,
+Blackpool,Arsenal,A,A,A
+,,,,
+Chelsea,Newcastle,H,A,H
+,,,,
+Newcastle,Chelsea,H,A,A
+,,,,
+Chelsea,Newcastle,H,D,H
+,,,,
+Newcastle,Chelsea,H,D,A
+,,,,
+Newcastle,Chelsea,A,A,A
+,,,,
+Chelsea,Newcastle,H,D,H
+,,,,
+Chelsea,Birmingham,H,H,H
+,,,,
+Birmingham,Chelsea,D,H,A
+,,,,
+Chelsea,Birmingham,H,H,H
+,,,,
+Birmingham,Chelsea,A,D,A
+,,,,
+Chelsea,Bolton,H,H,H
+,,,,
+Bolton,Chelsea,A,A,A
+,,,,
+Bolton,Chelsea,H,A,A
+,,,,
+Chelsea,Bolton,H,H,H
+,,,,
+Chelsea,Bolton,H,H,H
+,,,,
+Bolton,Chelsea,H,A,A
+,,,,
+Chelsea,Bolton,H,H,H
+,,,,
+Bolton,Chelsea,A,A,A
+,,,,
+Chelsea,Wigan,H,H,H
+,,,,
+Wigan,Chelsea,H,D,A
+,,,,
+Chelsea,Wigan,H,H,H
+,,,,
+Chelsea,Wigan,H,H,H
+,,,,
+Wigan,Chelsea,H,H,A
+,,,,
+Chelsea,Wigan,H,H,H
+,,,,
+West Brom,Chelsea,H,H,A
+,,,,
+West Brom,Chelsea,A,A,A
+,,,,
+Chelsea,West Brom,H,H,H
+,,,,
+West Brom,Chelsea,H,A,A
+,,,,
+Wolves,Chelsea,A,A,A
+,,,,
+Chelsea,Wolves,H,H,H
+,,,,
+Wolves,Chelsea,H,H,A
+,,,,
+Chelsea,Wolves,H,H,H
+,,,,
+Wolves,Chelsea,A,A,A
+,,,,
+Chelsea,Wolves,H,H,H
+,,,,
+Chelsea,West Ham,H,H,H
+,,,,
+Chelsea,West Ham,H,H,H
+,,,,
+West Ham,Chelsea,A,D,A
+,,,,
+West Ham,Chelsea,A,A,A
+,,,,
+Chelsea,West Ham,H,D,H
+,,,,
+Chelsea,Sunderland,H,H,H
+,,,,
+Sunderland,Chelsea,H,A,A
+,,,,
+Chelsea,Sunderland,H,A,H
+,,,,
+Chelsea,Sunderland,H,H,H
+,,,,
+Sunderland,Chelsea,A,A,A
+,,,,
+Chelsea,Sunderland,H,H,H
+,,,,
+Chelsea,Stoke,H,H,H
+,,,,
+Stoke,Chelsea,H,D,A
+,,,,
+Chelsea,Stoke,H,H,H
+,,,,
+Chelsea,Stoke,H,H,H
+,,,,
+Portsmouth,Chelsea,A,A,A
+,,,,
+Chelsea,Portsmouth,H,H,H
+,,,,
+Portsmouth,Chelsea,D,A,A
+,,,,
+Chelsea,Blackburn,H,H,H
+,,,,
+Blackburn,Chelsea,H,A,A
+,,,,
+Chelsea,Blackburn,H,H,H
+,,,,
+Blackburn,Chelsea,A,A,A
+,,,,
+Blackburn,Chelsea,A,D,A
+,,,,
+Chelsea,Blackburn,H,H,H
+,,,,
+Chelsea,Blackburn,H,H,H
+,,,,
+Blackburn,Chelsea,A,A,A
+Hull,Chelsea,D,D,A
+,,,,
+Chelsea,Hull,H,D,H
+,,,,
+Hull,Chelsea,D,A,A
+,,,,
+Blackpool,Chelsea,D,A,A
+,,,,
+Wigan,Man City,H,A,A
+,,,,
+Man City,Wigan,H,H,H
+,,,,
+Man City,Wigan,H,H,H
+,,,,
+Wigan,Man City,H,D,A
+,,,,
+Man City,West Brom,H,H,H
+,,,,
+West Brom,Man City,H,D,A
+,,,,
+Man City,West Brom,H,H,H
+,,,,
+West Brom,Man City,A,A,A
+,,,,
+Newcastle,Man City,A,A,A
+,,,,
+Man City,Newcastle,A,H,H
+,,,,
+Newcastle,Man City,A,A,A
+,,,,
+Man City,Newcastle,H,H,H
+,,,,
+Birmingham,Man City,H,D,A
+,,,,
+Man City,Birmingham,H,D,H
+,,,,
+Man City,Birmingham,H,H,H
+,,,,
+Birmingham,Man City,A,D,A
+,,,,
+Man City,Bolton,H,H,H
+,,,,
+Bolton,Man City,H,A,A
+,,,,
+Man City,Bolton,H,H,H
+,,,,
+Man City,Bolton,H,H,H
+,,,,
+Bolton,Man City,A,D,A
+,,,,
+Man City,Bolton,A,H,H
+,,,,
+Wolves,Man City,A,A,A
+,,,,
+Man City,Wolves,H,H,H
+,,,,
+Man City,Wolves,H,H,H
+,,,,
+Wolves,Man City,H,H,A
+,,,,
+Wolves,Man City,H,A,A
+,,,,
+Man City,West Ham,H,H,H
+,,,,
+West Ham,Man City,A,A,A
+,,,,
+West Ham,Man City,A,D,A
+,,,,
+Man City,Sunderland,H,D,H
+,,,,
+Sunderland,Man City,A,H,A
+,,,,
+Man City,Sunderland,H,H,H
+,,,,
+Sunderland,Man City,A,D,A
+,,,,
+Man City,Sunderland,H,H,H
+,,,,
+Stoke,Man City,A,D,A
+,,,,
+Man City,Stoke,H,H,H
+,,,,
+Man City,Stoke,H,H,H
+,,,,
+Stoke,Man City,D,D,A
+,,,,
+Stoke,Man City,H,D,A
+,,,,
+Man City,Stoke,H,H,H
+,,,,
+Man City,Portsmouth,H,H,H
+,,,,
+Man City,Blackburn,H,H,H
+,,,,
+Blackburn,Man City,A,A,A
+,,,,
+Blackburn,Man City,A,A,A
+,,,,
+Man City,Blackburn,H,H,H
+,,,,
+Man City,Blackburn,H,H,H
+,,,,
+Hull,Man City,A,H,A
+,,,,
+Man City,Hull,H,D,H
+,,,,
+Man City,Blackpool,H,H,H
+,,,,
+Blackpool,Man City,H,A,A
+,,,,
+Wigan,Man United,A,H,A
+,,,,
+Man United,Wigan,H,H,H
+,,,,
+Wigan,Man United,A,A,A
+,,,,
+Man United,Wigan,H,H,H
+,,,,
+Man United,Wigan,H,H,H
+,,,,
+Wigan,Man United,A,A,A
+,,,,
+Man United,Wigan,H,H,H
+,,,,
+Man United,West Brom,H,H,H
+,,,,
+West Brom,Man United,H,A,A
+,,,,
+Man United,West Brom,H,D,H
+,,,,
+West Brom,Man United,A,A,A
+,,,,
+Man United,West Brom,H,H,H
+,,,,
+Newcastle,Man United,A,H,A
+,,,,
+Man United,Newcastle,H,D,H
+,,,,
+Newcastle,Man United,A,D,A
+,,,,
+Newcastle,Man United,A,A,A
+,,,,
+Man United,Birmingham,H,H,H
+,,,,
+Birmingham,Man United,D,D,A
+,,,,
+Birmingham,Man United,H,D,A
+,,,,
+Man United,Bolton,H,H,H
+,,,,
+Man United,Bolton,H,H,H
+,,,,
+Bolton,Man United,A,A,A
+,,,,
+Man United,Bolton,H,H,H
+,,,,
+Bolton,Man United,H,A,A
+,,,,
+Wolves,Man United,A,A,A
+,,,,
+Man United,Wolves,H,H,H
+,,,,
+Wolves,Man United,A,H,A
+,,,,
+Man United,Wolves,H,H,H
+,,,,
+Wolves,Man United,A,A,A
+,,,,
+Man United,Wolves,H,H,H
+,,,,
+West Ham,Man United,D,A,A
+,,,,
+Man United,West Ham,H,H,H
+,,,,
+West Ham,Man United,A,A,A
+,,,,
+West Ham,Man United,A,A,A
+,,,,
+Man United,West Ham,H,H,H
+,,,,
+Sunderland,Man United,A,A,A
+,,,,
+Man United,Sunderland,H,H,H
+,,,,
+Man United,Sunderland,A,H,H
+,,,,
+Sunderland,Man United,H,D,A
+,,,,
+Sunderland,Man United,H,A,A
+,,,,
+Man United,Sunderland,H,D,H
+,,,,
+Sunderland,Man United,A,A,A
+,,,,
+Man United,Sunderland,H,H,H
+,,,,
+Man United,Stoke,H,H,H
+,,,,
+Man United,Stoke,H,H,H
+,,,,
+Stoke,Man United,A,A,A
+,,,,
+Man United,Stoke,H,H,H
+,,,,
+Stoke,Man United,A,A,A
+,,,,
+Stoke,Man United,D,A,A
+,,,,
+Man United,Stoke,H,H,H
+Man United,Portsmouth,H,H,H
+,,,,
+Portsmouth,Man United,A,A,A
+,,,,
+Man United,Portsmouth,H,H,H
+,,,,
+Blackburn,Man United,A,A,A
+,,,,
+Man United,Blackburn,H,A,H
+,,,,
+Blackburn,Man United,A,D,A
+,,,,
+Man United,Blackburn,H,H,H
+,,,,
+Blackburn,Man United,A,D,A
+,,,,
+Man United,Blackburn,H,H,H
+,,,,
+Man United,Blackburn,H,H,H
+,,,,
+Man United,Hull,H,H,H
+,,,,
+Hull,Man United,A,A,A
+,,,,
+Hull,Man United,A,A,A
+,,,,
+Man United,Hull,H,H,H
+,,,,
+Man United,Blackpool,H,H,H
+,,,,
+Blackpool,Man United,H,A,A
+,,,,
+Tottenham,Wigan,H,H,H
+,,,,
+Wigan,Tottenham,D,D,A
+,,,,
+Wigan,Tottenham,A,A,A
+,,,,
+Tottenham,Wigan,H,H,H
+,,,,
+Tottenham,West Brom,H,H,H
+,,,,
+West Brom,Tottenham,H,A,A
+,,,,
+Tottenham,West Brom,H,D,H
+,,,,
+Tottenham,West Brom,H,H,H
+,,,,
+Tottenham,Newcastle,H,H,H
+,,,,
+Newcastle,Tottenham,H,D,A
+,,,,
+Newcastle,Tottenham,H,D,A
+,,,,
+Tottenham,Newcastle,H,H,H
+,,,,
+Tottenham,Birmingham,H,H,H
+,,,,
+Birmingham,Tottenham,H,D,A
+,,,,
+Birmingham,Tottenham,H,D,A
+,,,,
+Bolton,Tottenham,D,A,A
+,,,,
+Tottenham,Bolton,H,H,H
+,,,,
+Tottenham,Bolton,A,H,H
+,,,,
+Bolton,Tottenham,H,H,A
+,,,,
+Tottenham,Bolton,H,H,H
+,,,,
+Bolton,Tottenham,H,D,A
+,,,,
+Tottenham,Wolves,H,D,H
+,,,,
+Wolves,Tottenham,A,D,A
+,,,,
+Wolves,Tottenham,D,H,A
+,,,,
+Tottenham,Wolves,H,A,H
+,,,,
+Tottenham,West Ham,H,D,H
+,,,,
+Tottenham,West Ham,H,H,H
+,,,,
+Sunderland,Tottenham,D,D,A
+,,,,
+Tottenham,Sunderland,H,H,H
+,,,,
+Sunderland,Tottenham,A,A,A
+,,,,
+Tottenham,Sunderland,H,D,H
+,,,,
+Sunderland,Tottenham,A,H,A
+,,,,
+Tottenham,Sunderland,H,H,H
+,,,,
+Tottenham,Stoke,H,D,H
+,,,,
+Stoke,Tottenham,D,H,A
+,,,,
+Tottenham,Stoke,H,H,H
+,,,,
+Stoke,Tottenham,H,A,A
+,,,,
+Tottenham,Stoke,H,A,H
+,,,,
+Tottenham,Portsmouth,H,H,H
+,,,,
+Portsmouth,Tottenham,H,A,A
+,,,,
+Tottenham,Blackburn,H,H,H
+,,,,
+Blackburn,Tottenham,A,A,A
+,,,,
+Blackburn,Tottenham,A,A,A
+,,,,
+Tottenham,Blackburn,H,H,H
+,,,,
+Tottenham,Blackburn,H,H,H
+,,,,
+Blackburn,Tottenham,H,A,A
+,,,,
+Tottenham,Hull,D,D,H
+,,,,
+Tottenham,Blackpool,H,D,H
+,,,,
+Blackpool,Tottenham,H,H,A

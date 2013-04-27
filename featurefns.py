@@ -8,10 +8,10 @@ statslist = [
              'HTGoals', 
              'Shots', 
              'ShotsOnTarget',
-#             'HitWoodwork',
+#             'HitWoodwork', #Not available for all seasons
              'Corners', 
              'Fouls', 
-#             'Offsides', 
+#             'Offsides', # Not available for all seasons
              'Yellows', 
              'Reds'
              ]
@@ -54,23 +54,11 @@ def getRecentResults(data, date, lastXGames, team, result, location):
     count = 0.0
     if len(teamdata) == 0: return None
     
-    #debug
-#    if len(teamdata) < lastXGames:
-#        print 'Setting None', team
-#        return None
-#        raise Exception("Debug this")
-    
     for x in teamdata:
-#        print x['Date'], x['HomeTeam'], x['AwayTeam'], x['FTR']
         if (x['AwayTeam'] == team and x['FTR'] == awayresult) or (x['HomeTeam'] == team and x['FTR'] == homeresult):
             count += 1
             
     return count*count/len(teamdata)
-
-
-
-
-
 
 
 
@@ -100,22 +88,12 @@ def getLastEncounters(data, date, lastXGames, homeTeam, awayTeam, result):
     count = 0.0
     if len(teamdata) == 0: return 0.0
     
-    #debug
-#    if len(teamdata) < lastXGames:
-#        print 'Setting None', team
-#        return None
-#        raise Exception("Debug this")
     
     for x in teamdata:
-#        print x['Date'], x['HomeTeam'], x['AwayTeam'], x['FTR']
         if ((x['HomeTeam'] == homeTeam and x['FTR'] == homeresult) or (x['AwayTeam'] == homeTeam and x['FTR'] == awayresult)):
             count += 1
             
     return count*count/len(teamdata)
-
-
-
-
 
 
 
@@ -148,18 +126,12 @@ def getRecentStats(data, date=None, lastXGames = None, team=None, stat=None):
         count = 0.0
         if len(teamdata) == 0: return None
         
-#        if len(teamdata) < lastXGames:
-#            print 'Setting None', team
-#            return None
-    #        raise Exception("Debug this")
-        
+      
         for x in teamdata:
             if x['AwayTeam'] == team:
                 count += x[awaystat]
-    #            print x['Date'], x['HomeTeam'], x['AwayTeam'], x[awaystat]
             elif x['HomeTeam'] == team:
                 count += x[homestat]
-    #            print x['Date'], x['HomeTeam'], x['AwayTeam'], x[homestat]
                 
         return count*count/len(teamdata)
     except Exception as e:
@@ -207,7 +179,6 @@ def getMatchDates(data, home, away, dateBefore, monthsOld):
     a=1
 
 def getFeatureGenerator(home, away):
-#    lastXgames = 4
     global statslist
     featureGenerator = []
     for result in ['Wins', 'Losses', 'Draws']:
@@ -236,8 +207,7 @@ def getFeatureGenerator(home, away):
                                                       'lastXGames':4,
                                                       'team':team,
                                                       'stat':stat}))
-                
-    
+
     return featureGenerator
 
 def getRecentGenerator(getRecentFn, params, date):
@@ -250,15 +220,6 @@ def getRecentGenerator(getRecentFn, params, date):
     else:
         raise Exception("Invalid 'getRecentFn' argument for getRecentStats")
 
-
-
-def getTrainingData(dataset, teamwise, date, homeTeam, awayTeam):
-    data = [l[:-4] for l in dataset 
-                 if l[-3] < date
-                 and homeTeam in l[-2:-3]
-                 and awayTeam in l[-2:-3]]
-    
-    tmp = []
 
 def trainOnAll(data):
     teamdat = {}
@@ -304,7 +265,7 @@ def trainOnAll(data):
                 hedr.append('H2H'+str(lastXGames)+'encounters'+result)
                                 
 #                for teamC in data['teamdata'].keys():
-                for teamC in []:
+                for teamC in []:#Ignore this feature
 #                for teamC in ['Chelsea','Man City', 'Man United', 'Arsenal'
 #                              'Liverpool','Tottenham',
 #                              'Wigan','Everton','Sunderland'
@@ -406,7 +367,7 @@ def trainOnAll(data):
             
             hedr.append('AwayTeam')
             tmp.append(x['AwayTeam'])
-#            
+            
             train.append(tmp)
             
             if x['HomeTeam'] in teamdat:
@@ -429,12 +390,12 @@ def trainOnAll(data):
     except Exception as e:
         return e
     
-    
-def deg2rad(deg):
+#Code to calculate distance from 2 points given lat long
+def deg2rad(deg):#Source http://www.johndcook.com/python_longitude_latitude.html
     return deg * (math.pi/180)
 
 
-def getDist(homeTeam, awayTeam):
+def getDist(homeTeam, awayTeam):#Source  http://www.johndcook.com/python_longitude_latitude.html
     R = 6371 # Radius of the earth in km
     (lat2,lat1) = (stadia[homeTeam][0], stadia[awayTeam][0])
     (lon2,lon1) = (stadia[homeTeam][1], stadia[awayTeam][1])
